@@ -18,7 +18,7 @@ def parse_ts(value):
 def parse_amount(value):
     if isinstance(value, str):
         value = value.replace(",", "").strip()
-    return Decimal(str(value))  # Decimal avoids float drift when summing money
+    return Decimal(str(value))  
 
 
 latest = {}  # txn_id -> (ts, status, amount)
@@ -34,7 +34,7 @@ with open("payments.jsonl", encoding="utf-8") as f:
             status = event["status"]
             amount = parse_amount(event["amount"])
         except (ValueError, KeyError, TypeError, AttributeError, ArithmeticError):
-            continue  # unreadable line / unusable event
+            continue  
 
         if txn_id not in latest or ts > latest[txn_id][0]:
             latest[txn_id] = (ts, status, amount)
